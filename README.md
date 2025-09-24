@@ -53,7 +53,7 @@ El objetivo es demostrar cómo **Grid organiza la macroestructura** (layout prin
 - **HTML5** para la estructura.  
 - **Sass (SCSS)** para modularidad y reuso:  
   - `variables` → colores, espaciados, tipografía.  
-  - `mixins` → utilidades (`flex-row`, `card-like`).  
+  - `mixins` → utilidades.  
   - `base` → reset y estilos globales.  
   - `layout` → secciones (`header`, `navbar`, `main`).  
 - **CSS Grid** para la estructura principal (header, layout con menú lateral, productos, testimonios).  
@@ -86,11 +86,11 @@ El objetivo es demostrar cómo **Grid organiza la macroestructura** (layout prin
 
 Una landing page con:  
 - Header morado con logo a la izquierda y nombre centrado.  
-- Barra de navegación azul clarito.  
-- Menú lateral gris.  
-- Sección de descripción y productos enmarcados en un bloque rosa.  
-- Tiles internos de productos/testimonios en rosa más flojo.  
-- Barra de garantías azul, igual que la navegación.  
+- Barra de navegación.  
+- Menú lateral.  
+- Sección de descripción y productos enmarcados.  
+- Tarjetas internas de productos/testimonios.  
+- Barra de garantías.  
 
 ---
 
