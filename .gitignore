@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# Sass / CSS artifacts
+.sass-cache/
+*.map
+css/*.map
+
+# Compilados o salidas (si algún día generas build)
+dist/
+build/
+
+# Archivos temporales del sistema/editores
+*.log
+*.tmp
+*.swp
+*~

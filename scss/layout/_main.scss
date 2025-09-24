@@ -1,0 +1,111 @@
+@use "../variables" as *;
+@use "../mixins";
+
+/* MAIN LAYOUT (GRID + FLEX) */
+.site-main {
+  margin-top: 1.25rem;
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr; /* menú fijo + contenido flexible */
+    gap: $gap;
+    align-items: start;
+  }
+
+  /* Columna izquierda */
+  .menu-panel {
+    @include mixins.card-like($menu-bg);
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  /* Columna derecha */
+  .content-col {
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: $gap;
+
+    /* === WRAPPER QUE PINTA EL FONDO DETRÁS DE AMBAS FILAS === */
+    .section-wrap {
+      @include mixins.card-like($section-wrap-bg, 1rem);
+      border-radius: 16px;                /* igual que el mockup */
+      display: grid;
+      gap: $gap;
+
+      /* Tarjeta Descripción (más oscura, bordes redondeados) */
+      .description-card {
+        @include mixins.card-like($desc-card-bg, 1rem);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+
+        h2 { margin: 0; font-size: clamp(1rem, 2vw, 1.1rem); font-weight: 700; }
+        p  { margin: 0; }
+      }
+
+      /* Contenedor Productos (intermedio) */
+      .products-card {
+        @include mixins.card-like($products-box-bg, .9rem);
+        border-radius: 14px;
+        display: grid;
+        gap: .75rem;
+
+        h3 { margin: 0; font-size: clamp(1rem, 2vw, 1.05rem); font-weight: 700; }
+
+        /* GRID de tiles; cada tile usa Flex para centrarse */
+        .product-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: .6rem;
+
+          .p-tile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 56px;
+            border-radius: 10px;
+            background: $card-bg;                 /* rosa flojo */
+            border: 1px solid rgba(0,0,0,.08);
+            font-weight: 600;
+            color: $text-dark;
+          }
+        }
+      }
+    }
+  }
+
+  /* Testimonios (contenedor del mismo tono que el wrapper, tiles flojos) */
+  .testimonials-row {
+    margin-top: $gap;
+    @include mixins.card-like($testimonials-bg);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $gap;
+
+    .t-tile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 60px;
+      border-radius: 10px;
+      background: $testimonials-cards-bg;               
+      border: 1px solid rgba(0,0,0,.08);
+      font-weight: 600;
+      color: $text-dark;
+    }
+  }
+
+  /* Garantías (mismo azul que la nav) */
+  .guarantees-bar {
+    margin-top: $gap;
+    @include mixins.card-like($nav-bg, .8rem);
+    text-align: center;
+
+    strong { display: inline-block; padding: .25rem .5rem; }
+  }
+}

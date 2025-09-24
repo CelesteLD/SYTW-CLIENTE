@@ -1,0 +1,48 @@
+@use "../variables" as *;
+@use "../mixins";
+
+/* Franja superior del header (morada) */
+.site-header {
+  margin-top: 1.25rem;
+
+  .topbar {
+    @include mixins.card-like($header-bg);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; // fracciones
+    align-items: center;
+    gap: $gap;
+    color: $white;
+
+    .logo-box {
+      grid-column: 1;
+      @include mixins.flex-row(flex-start, center, 1rem);
+
+      img {
+        width: 40px; height: 40px; display: block;
+        background: $white;
+        border-radius: 6px;
+        padding: .25rem;
+        border: 1px solid rgba(0,0,0,.15);
+      }
+
+      .logo-text {
+        font-weight: 600;
+        letter-spacing: .2px;
+      }
+    }
+
+    .company-name {
+      grid-column: 2;
+      justify-self: center;
+      margin: 0;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      font-weight: 700;
+      padding: .4rem .75rem;
+      border-radius: 6px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .spacer { grid-column: 3; }
+  }
+}
