@@ -33,14 +33,14 @@
     /* === WRAPPER QUE PINTA EL FONDO DETRÁS DE AMBAS FILAS === */
     .section-wrap {
       @include mixins.card-like($section-wrap-bg, 1rem);
-      border-radius: 16px;                /* igual que el mockup */
+      border-radius: $border-radius-lg;                /* igual que el mockup */
       display: grid;
       gap: $gap;
 
       /* Tarjeta Descripción (más oscura, bordes redondeados) */
       .description-card {
         @include mixins.card-like($desc-card-bg, 1rem);
-        border-radius: 16px;
+        border-radius: $border-radius-lg;
         display: flex;
         flex-direction: column;
         gap: .6rem;
@@ -62,7 +62,7 @@
       /* Estilo para Clientes (base a heredar) */
       .clients-card {
         @include mixins.card-like($section-wrap-bg, .9rem);
-        border-radius: 14px;
+        border-radius: $border-radius-md;
         display: grid;
         gap: .75rem;
 
@@ -88,7 +88,7 @@
             @include mixins.center-content;
 
             height: 56px;
-            border-radius: 10px;
+            border-radius: $border-radius-sm;
             background: $card-bg;                 
             border: 1px solid rgba(0,0,0,.08);
             font-weight: $font-weight-normal;
@@ -103,18 +103,29 @@
   .testimonials-row {
     margin-top: $gap;
     @include mixins.card-like($testimonials-bg);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $gap;
+    @include mixins.grid-layout(1fr, $gap); // una columna principal
+    padding: 1rem;
 
-    .testimonial-card {
-      @include mixins.center-content;      /* mixin para centrar */
-      height: 60px;
-      border-radius: 10px;
-      background: $testimonials-cards-bg;  
-      border: 1px solid rgba(0,0,0,.08);
-      font-weight: $font-weight-normal;
-      color: $text-dark;
+    // Título de la sección
+    .testimonials-title {
+      @include mixins.heading-style(clamp(1rem, 2vw, 1.05rem));
+      margin: 0 0 .5rem 0;
+      text-align: center;
+    }
+
+    // Contenedor de tarjetas
+    .testimonial-cards {
+      @include mixins.grid-layout(repeat(3, 1fr), $gap);
+
+      .testimonial-card {
+        @include mixins.center-content;
+        height: 60px;
+        border-radius: $border-radius-sm;
+        background: $testimonials-cards-bg;  
+        border: 1px solid rgba(0,0,0,.08);
+        font-weight: $font-weight-normal;
+        color: $text-dark;
+      }
     }
   }
 
