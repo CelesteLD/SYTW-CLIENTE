@@ -16,10 +16,11 @@
   .menu-panel {
     @include mixins.card-like($menu-bg);
     min-height: 380px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
+
+    /* mixin para centrar contenido */
+    @include mixins.center-content;
+
+    font-weight: $font-weight-normal;
     color: $text-dark;
   }
 
@@ -44,34 +45,53 @@
         flex-direction: column;
         gap: .6rem;
 
-        h2 { margin: 0; font-size: clamp(1rem, 2vw, 1.1rem); font-weight: 700; }
-        p  { margin: 0; }
+        /* mixin para encabezados */
+        h2 {
+          @include mixins.heading-style(clamp(1rem, 2vw, 1.1rem));
+          margin: 0;
+        }
+        p { margin: 0; }
       }
 
-      /* Contenedor Productos (intermedio) */
-      .products-card {
-        @include mixins.card-like($products-box-bg, .9rem);
+      /* ===========================
+         HERENCIA (Clientes → Productos)
+         - Definimos el estilo base de "Clientes"
+         - "Productos" hereda con @extend y sobreescribe lo necesario
+         =========================== */
+
+      /* Estilo para Clientes (base a heredar) */
+      .clients-card {
+        @include mixins.card-like($section-wrap-bg, .9rem);
         border-radius: 14px;
         display: grid;
         gap: .75rem;
 
-        h3 { margin: 0; font-size: clamp(1rem, 2vw, 1.05rem); font-weight: 700; }
+        h3 {
+          @include mixins.heading-style(clamp(1rem, 2vw, 1.05rem));
+          margin: 0;
+        }
+      }
 
-        /* GRID de tiles; cada tile usa Flex para centrarse */
+      /* Contenedor Productos (hereda de Clients) */
+      .products-card {
+        @extend .clients-card;              /* herencia */
+        background: $products-box-bg;       /* override de color */
+
+        /* GRID; cada tile usa Flex para centrarse */
         .product-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: .6rem;
 
-          .p-tile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .product-card {
+            /* mixin para centrar contenido */
+            @include mixins.center-content;
+
             height: 56px;
             border-radius: 10px;
-            background: $card-bg;                 /* rosa flojo */
+            background: $card-bg;                 
             border: 1px solid rgba(0,0,0,.08);
-            font-weight: 600;
+            font-weight: $font-weight-normal;
             color: $text-dark;
           }
         }
@@ -79,7 +99,7 @@
     }
   }
 
-  /* Testimonios (contenedor del mismo tono que el wrapper, tiles flojos) */
+  /* Testimonios (contenedor y tiles) */
   .testimonials-row {
     margin-top: $gap;
     @include mixins.card-like($testimonials-bg);
@@ -87,15 +107,13 @@
     grid-template-columns: repeat(3, 1fr);
     gap: $gap;
 
-    .t-tile {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .testimonial-card {
+      @include mixins.center-content;      /* mixin para centrar */
       height: 60px;
       border-radius: 10px;
-      background: $testimonials-cards-bg;               
+      background: $testimonials-cards-bg;  
       border: 1px solid rgba(0,0,0,.08);
-      font-weight: 600;
+      font-weight: $font-weight-normal;
       color: $text-dark;
     }
   }

@@ -13,3 +13,19 @@
   border-radius: $radius;
   padding: $pad;
 }
+
+// Mixin para estilizar títulos
+@mixin heading-style($size: 1.2rem) {
+  font-size: $size;
+  font-weight: 700;
+  margin-bottom: .5rem;
+  color: $text-dark;
+}
+
+// Mixin para centrar contenido
+@mixin center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
