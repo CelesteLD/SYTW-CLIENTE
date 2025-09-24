@@ -14,6 +14,14 @@ El objetivo es demostrar cómo **Grid organiza la macroestructura** (layout prin
 
 ---
 
+## 📸 Resultado final de la práctica
+
+![Mockup Landing Page Practise](img/result.png)
+
+> 🎯 *Resultado final obtenido*
+
+---
+
 ## 📂 Estructura del proyecto
 
 ```bash
