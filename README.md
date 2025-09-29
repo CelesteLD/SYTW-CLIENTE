@@ -1,100 +1,41 @@
-# 🌐 Práctica Intro Sass 2025
+# Práctica 1 · Sass 🎨
 
-Este proyecto reproduce el **mockup de una landing page** usando **HTML + Sass** con especial énfasis en **CSS Grid** y **Flexbox**, tal como se pide en la práctica de la asignatura *Tecnologías Web: Cliente*.  
-
-El objetivo es demostrar cómo **Grid organiza la macroestructura** (layout principal) y **Flexbox alinea micro-elementos** (contenido interno de tarjetas, navegación, etc.) además de aplicar los conocimientos adquiridos sobre **Sass**
-
----
-
-## 📸 Mockup de referencia
-
-![Mockup Landing Page](img/mockup.png)
-
-> ⚠️ *Imagen del mockup propuesto en la práctica*
+Este repositorio contiene la **Práctica 1 de la asignatura**, dedicada al uso de **Sass** como preprocesador CSS.  
+El objetivo es aprender a organizar y estructurar estilos de manera **modular, reutilizable y mantenible**, aplicando conceptos como **variables, mixins, parciales, Grid y Flexbox**.
 
 ---
 
-## 📸 Resultado final de la práctica
+## 📂 Estructura del repositorio
 
-![Mockup Landing Page Practise](img/result.png)
-
-> 🎯 *Resultado final obtenido*
-
----
-
-## 📂 Estructura del proyecto
-
-```bash
-.
-├── css
-│   ├── style.css
-│   └── style.css.map
-├── img
-│   └── logo.jpg
-├── index.html
-└── scss
-    ├── _mixins.scss
-    ├── _variables.scss
-    ├── base
-    │   └── _base.scss
-    ├── layout
-    │   ├── _header.scss
-    │   ├── _main.scss
-    │   └── _navbar.scss
-    └── main.scss
-
-6 directories, 11 files
+```
+    ├── ejercicios/ # Ejercicios individuales de Sass (1 a 4)
+    └── saas-webapp/ # Práctica principal: landing page basada en mockup
 ```
 
----
+### 🔹 `ejercicios/`
+Contiene cuatro ejercicios independientes, cada uno en su propia carpeta (`ejercicio-1` … `ejercicio-4`).  
+- **Ejercicio 1**: uso de variables.  
+- **Ejercicio 2**: sistema de mensajes (info, éxito, error).  
+- **Ejercicio 3**: creación de mixins para flex y tamaños fijos.  
+- **Ejercicio 4**: bucle `@for` para generar clases de margen.  
 
-## 🛠️ Tecnologías usadas
-
-- **HTML5** para la estructura.  
-- **Sass (SCSS)** para modularidad y reuso:  
-  - `variables` → colores, espaciados, tipografía.  
-  - `mixins` → utilidades.  
-  - `base` → reset y estilos globales.  
-  - `layout` → secciones (`header`, `navbar`, `main`).  
-- **CSS Grid** para la estructura principal (header, layout con menú lateral, productos, testimonios).  
-- **Flexbox** para centrado y alineación interna (logo, nav-items, tiles, etc.).
+### 🔹 `saas-webapp/`
+Contiene la práctica completa: una **landing page** desarrollada a partir de un mockup.  
+Incluye estructura modular en Sass (`base/`, `layout/`, variables y mixins) y uso de **Grid y Flexbox** para el diseño.
 
 ---
 
-## 🚀 Cómo ejecutarlo
+## ✅ Organización
+La separación entre **ejercicios** y **proyecto webapp** permite mantener el repositorio **claro y navegable**:  
+- Los ejercicios demuestran de forma aislada conceptos específicos de Sass.  
+- La webapp integra todos esos conceptos en un proyecto realista y completo.  
 
-1. Clona este repositorio:
+---
+
+## ▶️ Cómo usar
+1. Entrar en la carpeta deseada (`ejercicios/ejercicio-x` o `saas-webapp/`).  
+2. Compilar Sass:
    ```bash
-   git clone https://github.com/CelesteLD/saas-webapp.git
-   ```
-
-2. Instala Sass (si no lo tienes):
-   ```bash
-   npm install -g sass
-   ```
-
-3. Compila Sass en tiempo real:
-   ```bash
-   sass --watch scss/main.scss css/style.css
-   ```
-
-4. Abre `index.html` con **Live Server** en VS Code para ver la página en el navegador.
-
----
-
-## ✨ Resultado esperado
-
-Una landing page con:  
-- Header morado con logo a la izquierda y nombre centrado.  
-- Barra de navegación.  
-- Menú lateral.  
-- Sección de descripción y productos enmarcados.  
-- Tarjetas internas de productos/testimonios.  
-- Barra de garantías.  
-
----
-
-## 📑 Notas
-
-- El directorio `css/` está ignorado en Git (`.gitignore`), solo se compila en local.  
-- Se recomienda mantener la estructura modular de Sass para escalar fácilmente.  
+   sass scss/main.scss css/main.css --style=expanded
+    (o style.css en el caso de saas-webapp)
+3. Abrir index.html en el navegador.
