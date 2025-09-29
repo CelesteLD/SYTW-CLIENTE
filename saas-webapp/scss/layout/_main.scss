@@ -77,7 +77,7 @@
         @extend .clients-card;              /* herencia */
         background: $products-box-bg;       /* override de color */
 
-        /* GRID; cada tile usa Flex para centrarse */
+        /* GRID; cada tarjeta usa Flex para centrarse */
         .product-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -99,7 +99,7 @@
     }
   }
 
-  /* Testimonios (contenedor y tiles) */
+  /* Testimonios (contenedor y tarjetas) */
   .testimonials-row {
     margin-top: $gap;
     @include mixins.card-like($testimonials-bg);

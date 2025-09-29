@@ -12,4 +12,5 @@ body {
 .container {
   width: min(100% - 2rem, $container-max);
   margin-inline: auto;
+  margin-bottom: 2rem;
 }
