@@ -1,0 +1,18 @@
+// Mixin para dirección de un contenedor flexbox
+// $dir: row | column | row-reverse | column-reverse
+// $justify y $align opcionales para mayor control
+@mixin flex-direction($dir: row, $justify: flex-start, $align: stretch, $gap: .5rem) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+// Mixin para dar un tamaño específico a un elemento
+// $w = ancho, $h opcional (si no se pasa, usa el mismo valor que ancho)
+@mixin fixed-size($w, $h: $w) {
+  width: $w;
+  height: $h;
+  flex: 0 0 auto; // evita que el flexbox estire o encoja el item
+}

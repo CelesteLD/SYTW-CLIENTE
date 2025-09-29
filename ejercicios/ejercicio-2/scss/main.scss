@@ -1,0 +1,11 @@
+@use "variables" as *;
+@use "messages";
+
+// Demo mínima (no requerida, pero útil para ver algo)
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 1rem;
+  font-family: $font;
+}
+h1 { margin: 0 0 $gap; font-size: 1.25rem; }
+.stack { display: grid; gap: $gap; }

@@ -1,0 +1,14 @@
+/* Genera .margin-1 ... .margin-5 con márgenes crecientes de 10px */
+@for $i from 1 through 5 {
+  .margin-#{$i} {
+    margin: $i * 10px;
+  }
+}
+
+/* Estilos en las cajas */
+.box {
+  width: 120px;
+  height: 60px;
+  background: #c6def1;
+  border: 1px solid #333;
+}

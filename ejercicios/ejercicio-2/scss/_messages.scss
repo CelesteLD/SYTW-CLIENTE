@@ -1,0 +1,35 @@
+@use "sass:map";        // << necesario para map.get / map.has-key
+@use "variables" as *;
+
+// Placeholder base: NO genera CSS por sí solo
+%message-base {
+  padding: $pad-y $pad-x;
+  border-radius: $radius;
+  border: $border;
+  margin: .5rem 0;
+  line-height: 1.4;
+}
+
+/* Mapa de variantes */
+$messages: (
+  info:    (bg: $info-bg,    fg: $info-fg),
+  success: (bg: $success-bg, fg: $success-fg),
+  error:   (bg: $error-bg,   fg: $error-fg, bold-links: true)
+);
+
+/* Generador cumpliendo DRY */
+@each $name, $cfg in $messages {
+  .message--#{$name} {
+    @extend %message-base;
+    background: map.get($cfg, bg);
+    color: map.get($cfg, fg);
+
+    a { color: currentColor; text-decoration: underline; }
+
+    // En error, enlaces en negrita
+    @if map.has-key($cfg, bold-links) {
+      a { font-weight: 700; }
+    }
+  }
+}
+

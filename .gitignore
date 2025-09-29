@@ -24,3 +24,11 @@ build/
 *.tmp
 *.swp
 *~
+
+# Ignorar todos los CSS compilados
+css/*.css
+css/*.map
+# CSS compilados
+**/css/*.css
+**/css/*.map
+

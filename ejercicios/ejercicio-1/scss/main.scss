@@ -1,0 +1,19 @@
+@use "variables" as *;
+
+/* reset mínimo */
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  font: 400 1rem/1.5 $font-stack;
+  color: $text-color;
+  background: color-mix(in srgb, $color-secondary 12%, white); // uso de variable secundaria
+  padding: 1.25rem;
+}
+
+h1, h2 { line-height: 1.2; margin: 0 0 .5rem; }
+
+/* Aplicación directa de variables*/
+h1 { color: $color-primary; }
+h2 { color: $color-secondary; }
