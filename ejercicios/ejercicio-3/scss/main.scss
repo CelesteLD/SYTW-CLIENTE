@@ -1,18 +1,18 @@
 @use "mixins";
 
 // Demo: un contenedor flex con dirección row
-.demo-row {
+.demo-row { // Cajas centradas horizontal y verticalmente
   @include mixins.flex-direction(row, center, center, 1rem);
   margin-bottom: 2rem;
 }
 
 // Demo: un contenedor flex con dirección column
-.demo-col {
+.demo-col { // Cajas centradas en el eje horizontal y pegadas arriba en el vertical
   @include mixins.flex-direction(column, center, flex-start, .75rem);
 }
 
 // Elementos que usan tamaño fijo
-.box {
+.box { // Cajas cuadradas grises
   @include mixins.fixed-size(60px); // cuadrado 60x60
   background: #ddd;
   border: 2px solid #333;

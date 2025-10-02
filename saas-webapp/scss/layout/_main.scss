@@ -27,7 +27,7 @@
   /* Columna derecha */
   .content-col {
     display: grid;
-    grid-auto-rows: min-content;
+    grid-auto-rows: min-content; // filas que se ajustan al contenido
     gap: $gap;
 
     /* === WRAPPER QUE PINTA EL FONDO DETRÁS DE AMBAS FILAS === */

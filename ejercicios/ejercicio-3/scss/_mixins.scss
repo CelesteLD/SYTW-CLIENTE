@@ -6,7 +6,7 @@
   flex-direction: $dir;
   justify-content: $justify;
   align-items: $align;
-  gap: $gap;
+  gap: $gap; // Espaciado entre elementos
 }
 
 // Mixin para dar un tamaño específico a un elemento
