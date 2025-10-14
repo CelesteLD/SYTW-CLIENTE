@@ -1,0 +1,140 @@
+@use "../variables" as *;
+@use "../mixins";
+
+/* MAIN LAYOUT (GRID + FLEX) */
+.site-main {
+  margin-top: 1.25rem;
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr; /* menú fijo + contenido flexible */
+    gap: $gap;
+    align-items: start;
+  }
+
+  /* Columna izquierda */
+  .menu-panel {
+    @include mixins.card-like($menu-bg);
+    min-height: 380px;
+
+    /* mixin para centrar contenido */
+    @include mixins.center-content;
+
+    font-weight: $font-weight-normal;
+    color: $text-dark;
+  }
+
+  /* Columna derecha */
+  .content-col {
+    display: grid;
+    grid-auto-rows: min-content; // filas que se ajustan al contenido
+    gap: $gap;
+
+    /* === WRAPPER QUE PINTA EL FONDO DETRÁS DE AMBAS FILAS === */
+    .section-wrap {
+      @include mixins.card-like($section-wrap-bg, 1rem);
+      border-radius: $border-radius-lg;                /* igual que el mockup */
+      display: grid;
+      gap: $gap;
+
+      /* Tarjeta Descripción (más oscura, bordes redondeados) */
+      .description-card {
+        @include mixins.card-like($desc-card-bg, 1rem);
+        border-radius: $border-radius-lg;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+
+        /* mixin para encabezados */
+        h2 {
+          @include mixins.heading-style(clamp(1rem, 2vw, 1.1rem));
+          margin: 0;
+        }
+        p { margin: 0; }
+      }
+
+      /* ===========================
+         HERENCIA (Clientes → Productos)
+         - Definimos el estilo base de "Clientes"
+         - "Productos" hereda con @extend y sobreescribe lo necesario
+         =========================== */
+
+      /* Estilo para Clientes (base a heredar) */
+      .clients-card {
+        @include mixins.card-like($section-wrap-bg, .9rem);
+        border-radius: $border-radius-md;
+        display: grid;
+        gap: .75rem;
+
+        h3 {
+          @include mixins.heading-style(clamp(1rem, 2vw, 1.05rem));
+          margin: 0;
+        }
+      }
+
+      /* Contenedor Productos (hereda de Clients) */
+      .products-card {
+        @extend .clients-card;              /* herencia */
+        background: $products-box-bg;       /* override de color */
+
+        /* GRID; cada tarjeta usa Flex para centrarse */
+        .product-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: .6rem;
+
+          .product-card {
+            /* mixin para centrar contenido */
+            @include mixins.center-content;
+
+            height: 56px;
+            border-radius: $border-radius-sm;
+            background: $card-bg;                 
+            border: 1px solid rgba(0,0,0,.08);
+            font-weight: $font-weight-normal;
+            color: $text-dark;
+          }
+        }
+      }
+    }
+  }
+
+  /* Testimonios (contenedor y tarjetas) */
+  .testimonials-row {
+    margin-top: $gap;
+    @include mixins.card-like($testimonials-bg);
+    @include mixins.grid-layout(1fr, $gap); // una columna principal
+    padding: 1rem;
+
+    // Título de la sección
+    .testimonials-title {
+      @include mixins.heading-style(clamp(1rem, 2vw, 1.05rem));
+      margin: 0 0 .5rem 0;
+      text-align: center;
+    }
+
+    // Contenedor de tarjetas
+    .testimonial-cards {
+      @include mixins.grid-layout(repeat(3, 1fr), $gap);
+
+      .testimonial-card {
+        @include mixins.center-content;
+        height: 60px;
+        border-radius: $border-radius-sm;
+        background: $testimonials-cards-bg;  
+        border: 1px solid rgba(0,0,0,.08);
+        font-weight: $font-weight-normal;
+        color: $text-dark;
+      }
+    }
+  }
+
+  /* Garantías (mismo azul que la nav) */
+  .guarantees-bar {
+    margin-top: $gap;
+    @include mixins.card-like($nav-bg, .8rem);
+    text-align: center;
+
+    strong { display: inline-block; padding: .25rem .5rem; }
+  }
+}

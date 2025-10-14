@@ -1,0 +1,24 @@
+{
+  "name": "ejercicio-2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Práctica 2 - Ejercicio 2 (Parcel + GitHub Pages)",
+  "source": "src/index.html",
+  "scripts": {
+    "dev": "rimraf dist .parcel-cache && parcel src/index.html --dist-dir dist --port 5173 --open",
+    "clean": "rimraf dist .parcel-cache",
+    "build": "rimraf dist .parcel-cache && parcel build src/index.html --dist-dir dist --public-url /SYTW-CLIENTE/",
+    "build:local": "rimraf dist .parcel-cache && parcel build src/index.html --dist-dir dist --public-url ./",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -b gh-pages"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.0",
+    "autoprefixer": "^10.4.21",
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.16.0",
+    "postcss": "^8.5.6",
+    "rimraf": "^6.0.1",
+    "sass": "^1.93.2"
+  }
+}

@@ -1,0 +1,16 @@
+@use "../variables" as *;
+
+/* Reset mínimo y base */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  color: $text-dark;
+  background: #fafafa;
+}
+
+.container {
+  width: min(100% - 2rem, $container-max);
+  margin-inline: auto;
+  margin-bottom: 2rem;
+}

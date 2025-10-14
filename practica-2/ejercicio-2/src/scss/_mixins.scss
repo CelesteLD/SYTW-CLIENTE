@@ -1,0 +1,53 @@
+@use "variables" as *;
+
+// Flex genérico en fila, configurable (justify, align, gap)
+@mixin flex-row($justify: space-between, $align: center, $gap: .75rem) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+// Estilo de tarjeta: fondo, borde, radio y padding
+@mixin card-like($bg, $pad: .8rem) {
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: $pad;
+}
+
+// Estilo común de títulos secundarios (tamaño, negrita, color, margen inferior)
+@mixin heading-style($size: 1.2rem) {
+  font-size: $size;
+  font-weight: 700;
+  margin-bottom: .5rem;
+  color: $text-dark;
+}
+
+// Centrar contenido en ambos ejes usando flex
+@mixin center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Crear un grid con columnas definidas y gap
+@mixin grid-layout($cols: 1fr, $gap: $gap) {
+  display: grid;
+  grid-template-columns: $cols;
+  gap: $gap;
+}
+
+// Crear un grid con filas automáticas y gap
+@mixin grid-auto($rows: min-content, $gap: $gap) {
+  display: grid;
+  grid-auto-rows: $rows;
+  gap: $gap;
+}
+
+// Flex en columna con gap configurable
+@mixin flex-column($gap: .5rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
