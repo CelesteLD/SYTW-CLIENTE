@@ -98,3 +98,27 @@ npm run deploy            # publica en branch gh-pages
 - [Práctica 1](./practica-1/)
 - [Práctica 2 — Ejercicio 1 (Gulp)](./practica-2/ejercicio-1/)
 - [Práctica 2 — Ejercicio 2 (Parcel)](./practica-2/ejercicio-2/)
+
+## 📁 `practica-3/` — Web Components
+
+### `ejercicio-1/` — Custom Element básico
+- Implementación de `<hola-mundo>` con **Shadow DOM**.
+- Acepta el atributo `name` y renderiza un saludo dinámico (fallback: “Hola, Web Components!”).
+- Ciclo de vida usado: `constructor` → `connectedCallback()` → `attributeChangedCallback()`.
+- **Cómo probar**: abrir `index.html` con Live Server.
+
+### `ejercicio-2/` — Tarjetas + rating (5⭐) consumiendo JSON por CDN
+- Vista de **tarjetas** minimalistas (sin imagen): **nombre**, **horario**, **municipio · CP** y **valoración**.
+- **Componentes**:
+  - `<cultura-app>`: carga/filtra datos y muestra grid de tarjetas. Permite buscar por nombre/municipio y filtrar por tipología (p. ej. `biblioteca`).
+  - `<cultura-card>`: tarjeta sin imagen con badge de color + iniciales y el rating.
+  - `<cultura-rating>`: control de **1–5 estrellas** con **persistencia en `localStorage`** por `item-id`.
+- **Datos**: se consumen desde un repo público vía **jsDelivr** (CORS OK):
+  ```
+  https://cdn.jsdelivr.net/gh/celesteld/espacios-culturales-api@main/db.json
+  ```
+  Formato esperado: `{ "espacios": [ { ... } ] }` (se usan los campos `espacio_cultura_nombre`, `horario`, `direccion_municipio_nombre`, `direccion_codigo_postal`, `espacio_cultural_id`/`id`).
+- **Scripts** (`practica-3/ejercicio-2/scripts/`):
+  - `transform.py`: normaliza/filtra el dataset original (`espacios.json`) y genera `db.json` compatible.
+  - `db.json`: ejemplo de salida compatible con My JSON Server/jsDelivr.
+- **Cómo probar**: abrir `practica-3/ejercicio-2/index.html` con Live Server.
