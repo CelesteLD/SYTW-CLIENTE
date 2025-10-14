@@ -94,11 +94,6 @@ npm run deploy            # publica en branch gh-pages
 
 ---
 
-## Enlaces internos útiles
-- [Práctica 1](./practica-1/)
-- [Práctica 2 — Ejercicio 1 (Gulp)](./practica-2/ejercicio-1/)
-- [Práctica 2 — Ejercicio 2 (Parcel)](./practica-2/ejercicio-2/)
-
 ## 📁 `practica-3/` — Web Components
 
 ### `ejercicio-1/` — Custom Element básico
@@ -122,3 +117,11 @@ npm run deploy            # publica en branch gh-pages
   - `transform.py`: normaliza/filtra el dataset original (`espacios.json`) y genera `db.json` compatible.
   - `db.json`: ejemplo de salida compatible con My JSON Server/jsDelivr.
 - **Cómo probar**: abrir `practica-3/ejercicio-2/index.html` con Live Server.
+
+---
+## Enlaces internos útiles
+- [Práctica 1](./practica-1/)
+- [Práctica 2 — Ejercicio 1 (Gulp)](./practica-2/ejercicio-1/)
+- [Práctica 2 — Ejercicio 2 (Parcel)](./practica-2/ejercicio-2/)
+- [Práctica 3 - Ejercicio 1 (Hola mundo)](./practica-3/ejercicio-1/)
+- [Práctica 3 - Ejercicio 2 (WebComponents + complejo)](./practica-3/ejercicio-2/)
