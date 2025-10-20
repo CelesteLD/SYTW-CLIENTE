@@ -1,22 +1,34 @@
+// src/components/app.js
+// Componente <cultura-app>
+// Carga un JSON con espacios culturales, aplica filtros (tipología + búsqueda) y pinta <cultura-card>.
+//
+// Notas de funcionamiento:
+// - El atributo data-url apunta al JSON (array o { espacios: [...] }).
+// - "filtro" indica la tipología inicial seleccionada.
+// - Filtro por texto busca en nombre y municipio.
+// - Cada card recibe atributos con los campos relevantes (id, nombre, horario, municipio, cp).
+// - Estilos de la toolbar + grid están en /src/styles/app.css.
+
 const TIPOLOGIAS = ["biblioteca", "museo", "centro_cultural"];
 
 class CulturaApp extends HTMLElement {
+  static get observedAttributes() {
+    return ["data-url", "filtro"];
+  }
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host { display:block; }
-        .toolbar { display:flex; gap: 8px; align-items:center; flex-wrap: wrap; }
-        select, input {
-          padding: 8px 10px; border-radius: 10px; border: 1px solid #ddd;
-        }
-        .grid {
-          display: grid; gap: 16px; margin-top: 16px;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        }
-        .empty { color: #666; margin-top: 8px; }
-      </style>
+
+    // CSS externo
+    const cssURL = new URL("../styles/app.css", import.meta.url);
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssURL;
+
+    // DOM vía <template> (Safari-safe)
+    const tpl = document.createElement("template");
+    tpl.innerHTML = `
       <div class="toolbar">
         <label>Tipo:
           <select id="tipo"></select>
@@ -26,33 +38,40 @@ class CulturaApp extends HTMLElement {
       <div id="status" class="empty">Cargando…</div>
       <div id="grid" class="grid" hidden></div>
     `;
+
+    this.shadowRoot.append(link, tpl.content.cloneNode(true));
+
+    // Refs
     this.$grid = this.shadowRoot.querySelector("#grid");
     this.$status = this.shadowRoot.querySelector("#status");
     this.$tipo = this.shadowRoot.querySelector("#tipo");
     this.$q = this.shadowRoot.querySelector("#q");
   }
 
-  static get observedAttributes() { return ["data-url", "filtro"]; }
 
   connectedCallback() {
-    // opciones de tipologías
-    this.$tipo.innerHTML = TIPOLOGIAS.map(t => `<option value="${t}">${t}</option>`).join("");
+    // Opciones de tipologías
+    this.$tipo.innerHTML = TIPOLOGIAS.map((t) => `<option value="${t}">${t}</option>`).join("");
     this.$tipo.value = this.filtroInicial;
     this.$tipo.addEventListener("change", () => this.#render());
     this.$q.addEventListener("input", () => this.#render());
     this.#load();
   }
 
-  get url() { return this.getAttribute("data-url"); }
-  get filtroInicial() { return this.getAttribute("filtro") || "biblioteca"; }
+  get url() {
+    return this.getAttribute("data-url");
+  }
+  get filtroInicial() {
+    return this.getAttribute("filtro") || "biblioteca";
+  }
 
+  // Carga de datos vía fetch (acepta array o {espacios: [...]})
   async #load() {
     try {
       const res = await fetch(this.url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const raw = await res.json();
-      // jsDelivr nos sirve { espacios: [...] }
-      this.espacios = Array.isArray(raw) ? raw : (raw.espacios ?? []);
+      this.espacios = Array.isArray(raw) ? raw : raw.espacios ?? [];
       this.$status.textContent = "";
       this.$grid.hidden = false;
       this.#render();
@@ -62,16 +81,22 @@ class CulturaApp extends HTMLElement {
     }
   }
 
-  #fmtHorario(h) { return (!h || h === "_U") ? "Horario no disponible" : String(h).trim(); }
-  #isYes(v) { return String(v).trim().toLowerCase().match(/^(sí|si|true|1|yes)$/); }
+  // Helpers de formato
+  #fmtHorario(h) {
+    return !h || h === "_U" ? "Horario no disponible" : String(h).trim();
+  }
+  #isYes(v) {
+    return String(v).trim().toLowerCase().match(/^(sí|si|true|1|yes)$/);
+  }
 
+  // Filtro + pintado de cards
   #render() {
     if (!this.espacios) return;
 
     const tipo = this.$tipo.value || this.filtroInicial;
     const query = (this.$q.value || "").toLowerCase();
 
-    const filtrados = this.espacios.filter(e => {
+    const filtrados = this.espacios.filter((e) => {
       const flag = this.#isYes(e?.[tipo]);
       const texto = `${e?.espacio_cultura_nombre ?? ""} ${e?.direccion_municipio_nombre ?? ""}`.toLowerCase();
       return flag && (!query || texto.includes(query));
@@ -87,10 +112,12 @@ class CulturaApp extends HTMLElement {
       card.setAttribute("horario", this.#fmtHorario(e?.horario));
       card.setAttribute("municipio", e?.direccion_municipio_nombre ?? "");
       card.setAttribute("cp", e?.direccion_codigo_postal ?? "");
-      card.setAttribute("web", (e?.pagina_web && e.pagina_web !== "_U") ? e.pagina_web : "");
+      // Atributos extra por si los usas en el futuro:
+      card.setAttribute("web", e?.pagina_web && e.pagina_web !== "_U" ? e.pagina_web : "");
       card.setAttribute("img", e?.imagen_url_1 ?? "");
       this.$grid.appendChild(card);
     }
   }
 }
+
 customElements.define("cultura-app", CulturaApp);

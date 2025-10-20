@@ -1,0 +1,16 @@
+/* src/styles/app.css */
+/* Estilos simples para el contenedor de filtros + grilla responsiva. */
+
+:host { display: block; }
+
+.toolbar {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+select, input {
+  padding: 8px 10px; border-radius: 10px; border: 1px solid #ddd;
+}
+.grid {
+  display: grid; gap: 16px; margin-top: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.empty { color: #666; margin-top: 8px; }
