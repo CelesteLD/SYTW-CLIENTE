@@ -1,78 +1,78 @@
-/* src/styles/rating.css */
-/* Estilos compactos para <cultura-rating>. Las Custom Props permiten ajustar tamaños desde fuera. */
-
 :host {
-  display: block;
+  display:block;
   --cr-textarea-min: 28px;
   --cr-comments-max: 32px;
-  --cr-gap: 6px;
-  font: 13.5px/1.35 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: #222;
+  --cr-gap: 8px;
+  font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
 }
 
-.wrap { display: flex; flex-direction: column; gap: var(--cr-gap); }
+.wrap { display:flex; flex-direction:column; gap: var(--cr-gap); }
 
-/* rating */
-.rating-row { display: flex; align-items: center; gap: 6px; }
+/* Estrellas */
+.rating-row { display:flex; align-items:center; gap:8px; }
 button.star {
-  appearance: none; background: none; border: none; padding: 0;
-  font-size: 20px; line-height: 1; cursor: pointer; transition: transform .06s ease;
+  appearance:none; background:none; border:none; padding:4px;
+  font-size:22px; line-height:1; cursor:pointer;
+  border-radius:8px; transition: transform .06s ease, background .12s;
 }
-button.star:hover { transform: scale(1.08); }
-button.star[aria-pressed="true"] { filter: drop-shadow(0 0 2px rgba(0,0,0,.18)); }
-.count { font-size: .85rem; color: #666; margin-left: 4px; min-width: 52px; }
+button.star:hover { transform: translateY(-1px) scale(1.06); background: color-mix(in oklab, var(--brand-2), transparent 88%); }
+button.star[aria-pressed="true"] { text-shadow: 0 0 0 #0000; filter: drop-shadow(0 0 2px rgba(0,0,0,.16)); }
+.count { font-size:.9rem; color: var(--text-muted); margin-left:4px; min-width:52px; }
 
-.hr { height: 1px; background: linear-gradient(90deg, #eee, #ddd, #eee); border: 0; }
+.hr { height:1px; background:linear-gradient(90deg, var(--border), transparent); border:0; }
 
-/* comentarios (compacto) */
-form { display: grid; gap: 6px; }
+/* Formulario compacto */
+form { display:grid; gap:8px; }
 textarea {
-  width: 95%;
-  min-height: var(--cr-textarea-min);
-  resize: none;
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font: inherit;
-  outline: none;
-  background: #fff;
+  width:92%; min-height: var(--cr-textarea-min);
+  resize:none; padding:10px 12px;
+  border:1px solid var(--border); border-radius:12px;
+  font: inherit; outline:none; background: var(--bg);
+  transition: border-color .15s, box-shadow .15s, background .15s;
 }
-textarea:focus { border-color:#8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,.12); }
-.row { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-.muted { color: #777; font-size: .8rem; }
-.error { color: #b00020; font-size: .8rem; }
+textarea:focus {
+  border-color: color-mix(in oklab, var(--brand), white 25%);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand), transparent 85%);
+}
+.row { display:flex; align-items:center; gap:10px; justify-content:space-between; }
+.muted { color: var(--text-muted); font-size:.85rem; }
+.error { color: var(--danger); font-size:.85rem; }
 
+/* Botón primario */
 button.primary {
-  appearance: none;
-  border: 1px solid #7c3aed; background: #7c3aed; color: white;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font: 600 12.5px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  cursor: pointer;
-  box-shadow: 0 5px 12px rgba(124,58,237,.18);
+  appearance:none; border:1px solid color-mix(in oklab, var(--brand), black 4%);
+  background: linear-gradient(180deg, var(--brand) 0%, color-mix(in oklab, var(--brand), black 10%) 100%);
+  color:white; padding:8px 14px; border-radius: 999px;
+  font: 700 13.5px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  cursor:pointer; box-shadow: 0 10px 20px color-mix(in oklab, var(--brand), transparent 75%);
+  transition: filter .12s ease, transform .08s ease;
 }
-button.primary:hover { filter: brightness(1.03); }
+button.primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+button.primary:active{ transform: translateY(0); }
 
+/* Lista de comentarios */
 ul.comments {
-  list-style: none; padding: 0; margin: 0;
-  display: flex; flex-direction: column; gap: 6px;
-  max-height: var(--cr-comments-max);
-  overflow: auto;
+  list-style:none; padding:0; margin:0;
+  display:flex; flex-direction:column; gap:8px;
+  max-height: var(--cr-comments-max); overflow:auto; scroll-behavior:smooth;
 }
 .comment {
-  border: 1px solid #eee; border-radius: 12px;
-  padding: 6px 8px;
-  background: #fafafa;
-  display: grid; gap: 4px;
+  border:1px solid var(--border); border-radius:12px;
+  padding:8px 10px; background: color-mix(in oklab, var(--bg-elev), transparent 6%);
+  display:grid; gap:6px;
 }
-.comment .meta { display: flex; gap: 8px; align-items: center; color: #666; font-size: .75rem; }
-.comment .txt  { white-space: pre-wrap; word-break: break-word; font-size: .9rem; }
-.comment .actions { margin-left: auto; }
+.comment .meta { display:flex; gap:8px; align-items:center; color: var(--text-muted); font-size: .8rem; }
+.comment .txt  { white-space:pre-wrap; word-break:break-word; font-size:.95rem; }
+.comment .actions { margin-left:auto; }
 .comment .del {
-  appearance: none; border: none; background: none; color: #999; cursor: pointer; font-size: .85rem;
+  appearance:none; border:none; background:none; color: var(--text-muted);
+  cursor:pointer; font-size:.85rem; border-radius:8px; padding:2px 6px;
 }
-.comment .del:hover { color: #b00020; text-decoration: underline; }
+.comment .del:hover { color: var(--danger); text-decoration: underline; }
 
-.sr-only {
-  position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;
+/* Focus accesible en todo elemento interactivo dentro del shadow */
+:host *:where(button, [role="button"], select, input, textarea):focus-visible {
+  outline: 0; box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand), transparent 80%);
+  border-color: color-mix(in oklab, var(--brand), white 25%);
 }
