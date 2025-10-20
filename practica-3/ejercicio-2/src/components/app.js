@@ -1,14 +1,3 @@
-// src/components/app.js
-// Componente <cultura-app>
-// Carga un JSON con espacios culturales, aplica filtros (tipología + búsqueda) y pinta <cultura-card>.
-//
-// Notas de funcionamiento:
-// - El atributo data-url apunta al JSON (array o { espacios: [...] }).
-// - "filtro" indica la tipología inicial seleccionada.
-// - Filtro por texto busca en nombre y municipio.
-// - Cada card recibe atributos con los campos relevantes (id, nombre, horario, municipio, cp).
-// - Estilos de la toolbar + grid están en /src/styles/app.css.
-
 const TIPOLOGIAS = ["biblioteca", "museo", "centro_cultural"];
 
 class CulturaApp extends HTMLElement {
@@ -26,7 +15,7 @@ class CulturaApp extends HTMLElement {
     link.rel = "stylesheet";
     link.href = cssURL;
 
-    // DOM vía <template> (Safari-safe)
+    // DOM vía <template> 
     const tpl = document.createElement("template");
     tpl.innerHTML = `
       <div class="toolbar">

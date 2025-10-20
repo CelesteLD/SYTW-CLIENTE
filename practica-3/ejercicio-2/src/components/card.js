@@ -1,4 +1,3 @@
-// src/components/card.js
 class CulturaCard extends HTMLElement {
   static get observedAttributes() {
     return ["id-espacio", "nombre", "municipio", "cp", "web"];
@@ -54,7 +53,7 @@ class CulturaCard extends HTMLElement {
     this.$badge.textContent = initials || "📚";
     this.$badge.style.background = `hsl(${hue} 80% 50%)`;
 
-    // ===== Fila de acciones: SIEMPRE se reconstruye =====
+
     this.$actions.replaceChildren();
     const url = this.#sanitizeURL(webRaw);
 
@@ -73,7 +72,6 @@ class CulturaCard extends HTMLElement {
       span.textContent = "Página web no disponible";
       this.$actions.appendChild(span);
     }
-    // =====================================================
 
     // Scroll global: solo fijo textarea, no limito comments
     this.$rating.style.setProperty("--cr-textarea-min", "40px");
