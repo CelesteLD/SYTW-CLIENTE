@@ -1,14 +1,3 @@
-// src/components/rating.js
-// Componente <cultura-rating>
-// Gestiona 5 estrellas + lista de comentarios con persistencia localStorage.
-//
-// Notas de diseño:
-// - Mantengo la migración de una clave antigua a la nueva estructura.
-// - El estado (rating + comments) se centraliza en "store" con helpers get/set.
-// - Emite eventos personalizados "rating-change", "comment-add", "comment-remove"
-//   por si en el futuro quiero reaccionar desde fuera.
-// - CSS separado en /src/styles/rating.css y cargado con <link>.
-
 const LS_RATINGS_OLD = "cultura_ratings_v1";
 const LS_FEEDBACK = "cultura_feedback_v1";
 
@@ -33,7 +22,6 @@ const writeJSON = (k, v) => localStorage.setItem(k, JSON.stringify(v));
       if (!cur[id].rating) cur[id].rating = rating;
     }
     writeJSON(LS_FEEDBACK, cur);
-    // localStorage.removeItem(LS_RATINGS_OLD); // opcional
   }
 })();
 
@@ -98,7 +86,7 @@ class CulturaRating extends HTMLElement {
     link.rel = "stylesheet";
     link.href = cssURL;
 
-    // DOM vía <template> (Safari-safe)
+    // DOM vía <template>
     const tpl = document.createElement("template");
     tpl.innerHTML = `
       <div class="wrap">
