@@ -1,0 +1,481 @@
+:root{
+  --max-width: 1080px;
+  --gutter: 16px;
+  --muted: #666;
+  --border: #e6e6e6;
+  --link: #5b21b6;
+  --card-bg: #fff;
+  --shadow: 0 10px 30px rgba(17,17,17,0.06);
+  --radius: 12px;
+  --size-gap: 24px;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --card-height: 140px;
+  --card-inner-padding: 14px;
+}
+
+* { box-sizing: border-box; }
+html,body,#___gatsby,#gatsby-focus-wrapper { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: #111;
+  background: #fafafa;
+  line-height: 1.45;
+  font-size: 16px;
+}
+
+.site { max-width: var(--max-width); margin: 0 auto; padding: calc(var(--gutter) * 1.6); }
+
+header { margin-bottom: 1rem; }
+header nav a { color: var(--link); text-decoration: none; font-weight: 600; margin-right: 10px; }
+
+/* titles */
+h1 { margin: 0 0 .6rem 0; font-size: 1.6rem; }
+h2 { margin: 6px 0 18px 0; font-size: 1.3rem; }
+h3 { margin: 0 0 .4rem 0; font-size: 1.05rem; }
+
+/* grid */
+.cards {
+  display: grid;
+  gap: var(--size-gap);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+/* card */
+.card {
+  display: flex;
+  gap: 18px;
+  /* IMPORTANTE: stretch para que la columna ocupe toda la altura */
+  align-items: center;
+  padding: var(--card-inner-padding);
+  height: var(--card-height);
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, box-shadow .12s ease;
+  overflow: hidden;
+  position: relative;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(17,17,17,0.08); }
+
+/* avatar */
+.avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 999px; display: inline-block; }
+.avatar svg { display: block; border-radius: 999px; }
+
+/* ------------------------
+   GRID en la columna de contenido
+   filas: header (auto) | contenido flexible (1fr) | footer (auto)
+   ------------------------ */
+.card-content {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / scrollable / actions */
+  gap: 8px;
+  /* ocupa todo el alto disponible de la tarjeta */
+  height: 100%;
+  flex: 1 1 auto;
+  min-width: 0;    /* evita overflow horizontal */
+  min-height: 0;   /* permite que la fila 1fr calcule su espacio */
+  align-items: center;
+}
+
+/* boton estilo link/primary */
+.btn {
+  display: inline-block;
+  background: transparent;
+  color: var(--link);
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.btn:hover { text-decoration: underline; }
+
+.small { font-size: .95rem; color: var(--muted); }
+.center { text-align: center; }
+
+footer { margin-top: 2.2rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; }
+
+@media (max-width: 720px) {
+  :root { --card-height: 260px; }
+  .card { padding: 12px; gap: 12px; }
+  .avatar { width: 56px; height: 56px; }
+}
+
+/* --- Rule: el link que envuelve la card --- */
+.card-link {
+  display: block;           /* el enlace ocupa todo el espacio de la tarjeta */
+  color: inherit;           /* preserve colores de texto */
+  text-decoration: none;
+  outline: none;
+}
+
+/* foco visible para accesibilidad */
+.card-link:focus {
+  outline: 3px solid rgba(90,130,230,0.16);
+  outline-offset: 4px;
+}
+
+/* cuando el link (padre) está en hover/focus, aplica el efecto a la card */
+.card-link:focus .card,
+.card-link:hover .card {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(17,17,17,0.08);
+}
+
+/* Rating component */
+.rating { 
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 10px;
+  background: #dfd2f9;
+  box-shadow: 0 6px 18px rgba(17,17,17,0.04);
+  max-width: 720px;
+}
+
+.rating-header { margin-bottom: 8px; }
+
+.rating-summary { text-align: right; color: var(--muted); }
+
+.rating-stars { display: flex; gap: 6px; margin-bottom: 8px; }
+
+.rating-star {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rating-star:focus {
+  outline: 3px solid rgba(90,130,230,0.16);
+  outline-offset: 3px;
+}
+
+.rating-star svg { fill: rgba(0,0,0,0.12); transition: fill .12s ease, transform .12s ease; }
+
+.rating-star.filled svg { fill: #fbbf24; transform: scale(1.05); }
+.rating-star.empty svg { fill: rgba(0,0,0,0.12); }
+
+.rating-body textarea {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-family: var(--font-sans);
+}
+
+.rating-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.rating .btn { padding: 8px 12px; font-weight: 700; border-radius: 8px; }
+
+/* lista de entradas */
+.rating-list { margin-top: 12px; display: grid; gap: 12px; }
+
+.rating-entry {
+  border: 1px dashed rgba(0,0,0,0.04);
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.entry-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+
+.entry-stars svg { margin-right: 2px; fill: rgba(0,0,0,0.12); }
+.entry-stars svg.filled { fill: #fbbf24; }
+
+.entry-meta { color: var(--muted); }
+
+.entry-comment { white-space: pre-wrap; color: #111; margin-top: 4px; }
+
+/* responsive */
+@media (max-width: 720px) {
+  .rating { max-width: 100%; }
+}
+
+
+/* News component */
+.news {
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(17,17,17,0.04);
+  max-width: 720px;
+}
+
+.news-form input[type="text"],
+.news-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  margin-top: 6px;
+  box-sizing: border-box;
+}
+
+.news-actions { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+
+.news-list { margin-top: 12px; display: grid; gap: 12px; }
+
+.news-entry {
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px dashed rgba(0,0,0,0.04);
+}
+
+.news-entry h4 { margin: 0; font-size: 1rem; }
+
+.news-body { margin-top: 6px; color: #111; white-space: pre-wrap; }
+
+@media (max-width: 720px) {
+  .news { max-width: 100%; }
+}
+
+
+/* ---------------------------
+   fila superior (horario|dirección) + fila inferior (valoraciones|noticias)
+   Ambas filas tienen el ancho definido en .site / --max-width
+   --------------------------- */
+
+/* contenedor del template */
+.espacio-article { padding-bottom: 2.5rem; }
+
+/* hero (avatar + título) */
+.espacio-hero {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.espacio-hero-left { display: flex; gap: 1rem; align-items: center; }
+.espacio-hero .avatar { width: 96px; height: 96px; }
+.espacio-hero-meta { display: flex; flex-direction: column; gap: 6px; }
+.espacio-title { font-size: 1.8rem; margin: 0; font-weight: 800; letter-spacing: -0.3px; }
+.espacio-website a { color: var(--link); text-decoration: underline; font-weight: 600; }
+
+/* --- FILA SUPERIOR: horario (izq) / dirección (dcha) --- */
+.top-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px; /* izquierda flexible, derecha panel más estrecho */
+  gap: 24px;
+  margin-bottom: 22px;
+  align-items: start;
+}
+
+.top-info-left { min-width: 0; }
+.top-info-right { min-width: 0; }
+
+.direccion-panel {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(17,17,17,0.03);
+}
+
+/* estilos de sección reutilizables */
+.espacio-section-title { margin: 0 0 8px 0; font-size: 1.05rem; }
+.espacio-section-body { margin: 0; color: var(--muted); }
+
+/* --- FILA INFERIOR: panels valoraciones | noticias --- */
+.bottom-panels-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px; /* main flexible | sidebar fijo */
+  gap: 28px;
+  align-items: start; /* alinea inicio de ambos paneles */
+}
+
+/* aseguramos que los paneles internos ocupen 100% del panel y se alineen */
+.bottom-left, .bottom-right {
+  min-width: 0;
+}
+
+/* reutilizamos .espacio-panel para cuadros con padding */
+.espacio-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(17,17,17,0.04);
+}
+
+/* eliminamos doble padding dentro del Rating & News para que encajen en panel */
+.espacio-panel .rating,
+.espacio-panel .news {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* cabecera de sección con hint a la derecha */
+.section-header-row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* entradas/elementos: estilo uniforme */
+.rating-entry, .news-entry {
+  background: #e2caf9;
+  border: 1px solid rgba(0,0,0,0.03);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* pequeños ajustes de botones y enlaces dentro de paneles */
+.espacio-panel .btn {
+  color: var(--link);
+  background: transparent;
+  border: none;
+  padding: 6px 8px;
+}
+
+/* responsive: apilar todo en pantallas pequeñas */
+@media (max-width: 980px) {
+  .top-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .bottom-panels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .espacio-hero .avatar { width: 80px; height: 80px; }
+  .espacio-title { font-size: 1.5rem; }
+  .espacio-panel { padding: 12px; }
+}
+
+/* pequeños detalles visuales para cohesión */
+.top-info-grid .espacio-section-body,
+.direccion-panel .small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (min-width: 981px) {
+  .bottom-right { position: relative; }
+  .bottom-right .espacio-panel { position: sticky; top: 20px; }
+}
+
+/* avatar envoltura con degradado y sombra */
+.avatar-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  padding: 6px;
+  display: inline-grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(91,33,182,0.12), rgba(34,197,94,0.08));
+  box-shadow: 0 6px 18px rgba(91,33,182,0.06);
+}
+
+/* Si el svg del Avatar tiene tamaño, lo centramos */
+.avatar-wrap .avatar { width: 84px; height: 84px; }
+
+.espacio-hero { margin-bottom: 1.25rem; }
+.espacio-hero-left { display: flex; gap: 1rem; align-items: center; }
+.espacio-hero-meta { display: flex; flex-direction: column; gap: 8px; }
+
+.espacio-title {
+  font-size: 2rem;
+  line-height: 1.05;
+  margin: 0;
+  font-weight: 900;
+  color: #0b0b0b;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* acciones del hero (botones, etc.) */
+.hero-actions { display: flex; gap: 10px; align-items: center; }
+
+/* botón "Visitar web" */
+.btn-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--link), #7c3aed);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(91,33,182,0.12);
+  border: none;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  font-size: 0.95rem;
+}
+.btn-visit:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(91,33,182,0.14); opacity: 0.98; }
+.btn-visit:active { transform: translateY(-1px); }
+
+.btn-visit svg path { fill: rgba(255,255,255,0.95); }
+
+.direccion-panel {
+  padding: 16px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff, #fbfbff);
+  border: 1px solid rgba(99,102,241,0.08);
+  box-shadow: 0 8px 24px rgba(17,17,17,0.03);
+}
+
+/* horario se integra mejor visualmente */
+.espacio-section-title { margin: 0 0 6px 0; font-weight: 700; }
+.espacio-section-body {
+  margin: 0;
+  color: var(--muted);
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(91,33,182,0.02), rgba(91,33,182,0.00));
+  border: 1px solid rgba(91,33,182,0.03);
+}
+
+/* paneles inferiores */
+.espacio-panel {
+  background: var(--card-bg);
+  border: 1px solid rgba(17,17,17,0.04);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 28px rgba(17,17,17,0.04);
+}
+
+/* botones dentro de paneles conservan color primario */
+.espacio-panel .btn {
+  color: var(--link);
+  font-weight: 700;
+  padding: 6px 8px;
+}
+
+/* entradas estilo tarjeta */
+.rating-entry, .news-entry {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* pequeños refinamientos responsive */
+@media (max-width: 980px) {
+  .avatar-wrap { width: 80px; height: 80px; padding: 5px; }
+  .avatar-wrap .avatar { width: 70px; height: 70px; }
+  .espacio-title { font-size: 1.5rem; }
+  .btn-visit { padding: 8px 10px; font-size: 0.92rem; }
+}
