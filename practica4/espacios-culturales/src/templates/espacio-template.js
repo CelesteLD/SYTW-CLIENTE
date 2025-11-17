@@ -37,13 +37,14 @@ const EspacioTemplate = ({ data }) => {
       <article className="espacio-article">
         <div className="espacio-hero">
           <div className="espacio-hero-left">
-            {/* Avatar: el componente Avatar puede mantener su SVG; envolvemos con clase para estilo */}
             <div className="avatar-wrap">
               <Avatar name={s.espacio_cultura_nombre} size={96} />
             </div>
 
             <div className="espacio-hero-meta">
-              <h1 className="espacio-title">{s.espacio_cultura_nombre}</h1>
+              <h1 className="espacio-title" data-cy="espacio-title">
+                {s.espacio_cultura_nombre}
+              </h1>
 
               <div className="hero-actions">
                 {s.pagina_web && (
@@ -64,12 +65,11 @@ const EspacioTemplate = ({ data }) => {
           </div>
         </div>
 
-        {/* TOP: horario y dirección */}
         <div className="top-info-grid">
           <div className="top-info-left">
             <section aria-labelledby="horario" className="espacio-section">
               <h2 id="horario" className="espacio-section-title">Horario</h2>
-              <p className="espacio-section-body">{horario}</p>
+              <p className="espacio-section-body" data-cy="espacio-horario">{horario}</p>
             </section>
           </div>
 
@@ -83,7 +83,6 @@ const EspacioTemplate = ({ data }) => {
           </div>
         </div>
 
-        {/* BOTTOM: valoraciones y noticias */}
         <div className="bottom-panels-grid">
           <main className="bottom-left">
             <div className="espacio-panel">
