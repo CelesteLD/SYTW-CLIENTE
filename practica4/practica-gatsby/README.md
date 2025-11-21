@@ -121,4 +121,6 @@ npm install
 # 2. Iniciar el servidor de desarrollo
 npm run develop
 
-# 3. Iniciar 
+# 3. Iniciar Cypress para pruebas
+npx cypress open
+```
