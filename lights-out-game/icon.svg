@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Fondo oscuro circular -->
+  <circle cx="16" cy="16" r="16" fill="#222"/>
+  <!-- circulo interior amarillo -->
+  <circle cx="16" cy="16" r="10" fill="#eab308"/>
+  <!-- Circulo interno simulando brillo -->
+  <circle cx="12" cy="12" r="3" fill="#fff" opacity="0.5"/>
+</svg>
