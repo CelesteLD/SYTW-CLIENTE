@@ -1,20 +1,57 @@
 class LightsOutGame {
-    constructor(canvasId, rows = 5, cols = 5) {
+    constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        this.rows = rows;
-        this.cols = cols;
-        this.cellSize = this.canvas.width / this.cols;
         
-        // Configuración de animación
-        this.animSpeed = 10.0; // Velocidad de cambio (más alto = más rápido)
+        // Configuración por defecto
+        this.rows = 5;
+        this.cols = 5;
+        this.mode = 'classic'; // 'classic' o 'diagonal'
+        this.cellSize = 0; // Se calcula al redimensionar
+        
+        this.animSpeed = 10.0;
         
         this.grid = [];
         this.lastTime = 0;
         this.isRunning = false;
 
-        this.bindEvents();
+        this.bindEvents();     // Eventos del Canvas
+        this.bindUI();         // Eventos de los botones HTML
+        
+        this.resize();         // Calcular tamaño celda inicial
         this.init();
+    }
+
+    // --- Gestión de la Interfaz ---
+    bindUI() {
+        const sizeSelect = document.getElementById('sizeSelect');
+        const modeSelect = document.getElementById('modeSelect');
+        const btnReset = document.getElementById('btnReset');
+
+        // Al cambiar el tamaño en el desplegable
+        sizeSelect.addEventListener('change', (e) => {
+            const newSize = parseInt(e.target.value);
+            this.rows = newSize;
+            this.cols = newSize;
+            this.resize();     // Recalcular tamaño de celdas
+            this.createGrid(); // Regenerar tablero
+        });
+
+        // Al cambiar el modo de juego
+        modeSelect.addEventListener('change', (e) => {
+            this.mode = e.target.value;
+            // Opcional: ¿Reiniciar al cambiar modo? De momento no, para que sea fluido.
+        });
+
+        // Al pulsar reiniciar
+        btnReset.addEventListener('click', () => {
+            this.createGrid();
+        });
+    }
+
+    resize() {
+        // Calculamos el tamaño de celda basándonos en el ancho del canvas y columnas
+        this.cellSize = this.canvas.width / this.cols;
     }
 
     init() {
@@ -22,17 +59,16 @@ class LightsOutGame {
         this.start();
     }
 
-    // ---  Estructura de Datos ---
     createGrid() {
         this.grid = [];
         for (let c = 0; c < this.cols; c++) {
             this.grid[c] = []; 
             for (let r = 0; r < this.rows; r++) {
+                // Empezamos aleatorio para que haya juego
                 const isActive = Math.random() > 0.5;
-                // Ahora cada celda es un OBJETO complejo
                 this.grid[c][r] = {
-                    active: isActive,          // Lógica (target)
-                    intensity: isActive ? 1 : 0 // Visual (actual)
+                    active: isActive,
+                    intensity: isActive ? 1 : 0
                 };
             }
         }
@@ -57,18 +93,31 @@ class LightsOutGame {
         this.toggleLights(col, row);
     }
 
+    // --- Lógica de Modos ---
     toggleLights(col, row) {
         const toggle = (c, r) => {
             if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
-                // Invertimos la propiedad .active, no la celda entera
                 this.grid[c][r].active = !this.grid[c][r].active;
             }
         };
+
+        // Siempre cambiamos la central
         toggle(col, row);
-        toggle(col, row - 1);
-        toggle(col, row + 1);
-        toggle(col - 1, row);
-        toggle(col + 1, row);
+
+        if (this.mode === 'classic') {
+            // MODO CLÁSICO: Cruz (+)
+            toggle(col, row - 1); // Arriba
+            toggle(col, row + 1); // Abajo
+            toggle(col - 1, row); // Izq
+            toggle(col + 1, row); // Der
+        } else if (this.mode === 'diagonal') {
+            // MODO DIAGONAL: Aspa (X)
+            // Vecinos de las esquinas
+            toggle(col - 1, row - 1); // Arriba-Izq
+            toggle(col + 1, row - 1); // Arriba-Der
+            toggle(col - 1, row + 1); // Abajo-Izq
+            toggle(col + 1, row + 1); // Abajo-Der
+        }
     }
 
     start() {
@@ -81,46 +130,34 @@ class LightsOutGame {
 
     loop(timestamp) {
         if (!this.isRunning) return;
-
         const deltaTime = (timestamp - this.lastTime) / 1000;
         this.lastTime = timestamp;
-
-        // Protegemos contra saltos grandes (Por ejemplo, cuando el
-        // usuario cambie de pestaña cambiar de pestaña y vuelva)
         const safeDeltaTime = Math.min(deltaTime, 0.1);
 
         this.update(safeDeltaTime);
         this.draw();
-
         requestAnimationFrame((ts) => this.loop(ts));
     }
 
-    // --- Lógica de Interpolación ---
     update(dt) {
-        // Recorremos todas las celdas para actualizar su intensidad visual
         for (let c = 0; c < this.cols; c++) {
             for (let r = 0; r < this.rows; r++) {
                 const cell = this.grid[c][r];
-                
-                // Si debe estar activa, subimos intensidad hacia 1
                 if (cell.active) {
                     if (cell.intensity < 1) {
                         cell.intensity += this.animSpeed * dt;
-                        if (cell.intensity > 1) cell.intensity = 1; // Tope
+                        if (cell.intensity > 1) cell.intensity = 1;
                     }
-                } 
-                // Si debe estar inactiva, bajamos intensidad hacia 0
-                else {
+                } else {
                     if (cell.intensity > 0) {
                         cell.intensity -= this.animSpeed * dt;
-                        if (cell.intensity < 0) cell.intensity = 0; // Tope
+                        if (cell.intensity < 0) cell.intensity = 0;
                     }
                 }
             }
         }
     }
 
-    // --- Pintar según intensidad ---
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -128,34 +165,23 @@ class LightsOutGame {
             for (let c = 0; c < this.cols; c++) {
                 const x = c * this.cellSize;
                 const y = r * this.cellSize;
-                const cell = this.grid[c][r]; // Objeto celda
+                const cell = this.grid[c][r];
 
-                this.ctx.strokeStyle = '#333'; // Bordes de celda
+                this.ctx.strokeStyle = '#333';
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
                 
                 const centerX = x + (this.cellSize / 2);
                 const centerY = y + (this.cellSize / 2);
                 
-                // --- Pintar luz con intensidad ---
-                // Interpolamos el color manualmente
-                // Base (apagado): rgb(68, 68, 68) -> #444
-                // Luz (encendido): rgb(255, 235, 59) -> #ffeb3b
-                
-                // Usamos la intensidad para la opacidad y el "glow"
-                this.ctx.beginPath();
-                
-                // Radio dinámico: Un poco más pequeño si está apagándose
+                // Dibujamos según intensidad
                 const radius = (this.cellSize * 0.3) + (cell.intensity * 0.05 * this.cellSize);
+                
+                this.ctx.beginPath();
                 this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
                 
-                // Si hay algo de intensidad, calculamos el color mezcla
                 if (cell.intensity > 0) {
-                    // Amarillo con opacidad variable según intensidad
-                    // rgba(R, G, B, Alpha)
                     this.ctx.fillStyle = `rgba(255, 235, 59, ${0.1 + (cell.intensity * 0.9)})`;
-                    
-                    // El resplandor crece con la intensidad
                     this.ctx.shadowBlur = 20 * cell.intensity; 
                     this.ctx.shadowColor = `rgba(255, 235, 59, ${cell.intensity})`;
                 } else {
@@ -165,12 +191,13 @@ class LightsOutGame {
                 
                 this.ctx.fill();
                 this.ctx.closePath();
-                this.ctx.shadowBlur = 0; // Reset siempre
+                this.ctx.shadowBlur = 0;
             }
         }
     }
 }
 
 window.onload = () => {
+    // Al instanciar no necesitamos pasar filas/cols porque las lee el constructor por defecto
     const game = new LightsOutGame('gameCanvas');
 };

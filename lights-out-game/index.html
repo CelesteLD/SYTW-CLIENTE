@@ -12,11 +12,33 @@
 
     <div class="game-container">
         <h1>Lights Out</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sizeSelect">Tamaño:</label>
+                <select id="sizeSelect">
+                    <option value="3">3x3 (Fácil)</option>
+                    <option value="4">4x4</option>
+                    <option value="5" selected>5x5 (Clásico)</option>
+                    <option value="6">6x6</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="modeSelect">Modo:</label>
+                <select id="modeSelect">
+                    <option value="classic">Clásico (+)</option>
+                    <option value="diagonal">Diagonal (X)</option>
+                </select>
+            </div>
+
+            <button id="btnReset">Reiniciar Partida</button>
         
         <!-- El Canvas donde dibujaremos el juego -->
-        <canvas id="gameCanvas" width="500" height="500"></canvas>
+            <canvas id="gameCanvas" width="500" height="500"></canvas>
         
-        <p class="status">Iteración 5: Trabajando las animaciones</p>
+            <p class="status">Iteración 6: Añadiendo modos de juego y tamaños</p>
+        </div>
     </div>
 
     <!-- Vinculamos la lógica del juego (script) -->
