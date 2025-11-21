@@ -6,36 +6,44 @@ class LightsOutGame {
         this.cols = cols;
         this.cellSize = this.canvas.width / this.cols;
         
-        // --- ITERACIÓN 2 ---
-        // Escuchamos los eventos del ratón
+        // Matriz para guardar el estado (true = encendida, false = apagada)
+        this.grid = []; 
+
         this.bindEvents();
-        
         this.init();
     }
 
     init() {
-        console.log("Juego inicializado");
+        // 1. Inicializamos la matriz de datos
+        this.createGrid();
+        
+        // 2. Pintamos el estado inicial
         this.draw();
     }
 
-    // --- ITERACIÓN 2: GESTIÓN DE EVENTOS ---
+    // --- ITERACIÓN 3: MATRIZ DE DATOS ---
+    createGrid() {
+        this.grid = [];
+        for (let c = 0; c < this.cols; c++) {
+            this.grid[c] = []; // Creamos una columna vacía
+            for (let r = 0; r < this.rows; r++) {
+                // Estado inicial: 50% de probabilidad de estar encendida
+                // Math.random() devuelve un número entre 0 y 1
+                this.grid[c][r] = Math.random() > 0.5;
+            }
+        }
+        console.log("Matriz generada:", this.grid);
+    }
+
     bindEvents() {
-        // Usamos una función flecha (e) => ... para no perder el valor de 'this'
         this.canvas.addEventListener('click', (e) => {
-            // 1. Obtener la posición exacta del canvas en la pantalla
             const rect = this.canvas.getBoundingClientRect();
-            
-            // 2. Calcular la posición X e Y del ratón DENTRO del canvas
-            // Restamos la posición de la ventana (clientX) menos donde empieza el canvas (rect.left)
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            // 3. Convertir píxeles a coordenadas de la matriz (0 a 4)
-            // Math.floor redondea hacia abajo (ej: 3.8 -> 3)
             const col = Math.floor(x / this.cellSize);
             const row = Math.floor(y / this.cellSize);
 
-            // 4. Comprobación de seguridad (para no salirnos del array)
             if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
                 this.handleClick(col, row);
             }
@@ -43,19 +51,30 @@ class LightsOutGame {
     }
 
     handleClick(col, row) {
-        // De momento, solo mostramos por consola qué hemos tocado
-        console.log(`Click detectado en: Columna ${col}, Fila ${row}`);
+        // --- ITERACIÓN 3: REGLAS DEL JUEGO ---
         
-        // VISUAL: Vamos a pintar esa celda de rojo temporalmente para verificar visualmente
-        this.highlightCell(col, row);
+        // 1. Aplicar la lógica (cambiar luces)
+        this.toggleLights(col, row);
+        
+        // 2. Repintar TODO el tablero con el nuevo estado
+        this.draw();
     }
 
-    highlightCell(col, row) {
-        const x = col * this.cellSize;
-        const y = row * this.cellSize;
-        
-        this.ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Rojo 
-        this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
+    toggleLights(col, row) {
+        // Función auxiliar interna para cambiar una celda de forma segura
+        const toggle = (c, r) => {
+            if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
+                // Invertimos el valor: true -> false, false -> true
+                this.grid[c][r] = !this.grid[c][r];
+            }
+        };
+
+        // Regla clásica: La celda clicada + Arriba, Abajo, Izquierda, Derecha
+        toggle(col, row);     // Centro
+        toggle(col, row - 1); // Arriba
+        toggle(col, row + 1); // Abajo
+        toggle(col - 1, row); // Izquierda
+        toggle(col + 1, row); // Derecha
     }
 
     draw() {
@@ -65,19 +84,38 @@ class LightsOutGame {
             for (let c = 0; c < this.cols; c++) {
                 const x = c * this.cellSize;
                 const y = r * this.cellSize;
+                
+                // Leemos el estado de NUESTRA matriz
+                const isOn = this.grid[c][r];
 
-                this.ctx.strokeStyle = '#555';
+                // --- ESTILO VISUAL ---
+                this.ctx.strokeStyle = '#333';
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
                 
+                // Dibujar "bombilla"
                 const centerX = x + (this.cellSize / 2);
                 const centerY = y + (this.cellSize / 2);
                 
                 this.ctx.beginPath();
-                this.ctx.arc(centerX, centerY, this.cellSize * 0.3, 0, Math.PI * 2);
-                this.ctx.fillStyle = '#444';
+                this.ctx.arc(centerX, centerY, this.cellSize * 0.35, 0, Math.PI * 2);
+                
+                if (isOn) {
+                    // LUZ ENCENDIDA: Amarillo brillante + Resplandor
+                    this.ctx.fillStyle = '#ffeb3b'; 
+                    this.ctx.shadowBlur = 20; // Efecto de luz (glow)
+                    this.ctx.shadowColor = "#ffeb3b";
+                } else {
+                    // LUZ APAGADA: Gris oscuro + Sin resplandor
+                    this.ctx.fillStyle = '#444'; 
+                    this.ctx.shadowBlur = 0;
+                }
+                
                 this.ctx.fill();
                 this.ctx.closePath();
+                
+                // IMPORTANTE: Resetear el shadowBlur para que no afecte al recuadro siguiente
+                this.ctx.shadowBlur = 0;
             }
         }
     }
