@@ -6,33 +6,30 @@ class LightsOutGame {
         this.cols = cols;
         this.cellSize = this.canvas.width / this.cols;
         
-        // Matriz para guardar el estado (true = encendida, false = apagada)
-        this.grid = []; 
+        this.grid = [];
+        
+        // --- ITERACIÓN 4: VARIABLES DEL GAME LOOP ---
+        this.lastTime = 0;      // Marca de tiempo del último frame
+        this.isRunning = false; // Control para pausar si fuera necesario
 
         this.bindEvents();
         this.init();
     }
 
     init() {
-        // 1. Inicializamos la matriz de datos
         this.createGrid();
-        
-        // 2. Pintamos el estado inicial
-        this.draw();
+        // En lugar de pintar una vez, arrancamos el motor
+        this.start();
     }
 
-    // --- ITERACIÓN 3: MATRIZ DE DATOS ---
     createGrid() {
         this.grid = [];
         for (let c = 0; c < this.cols; c++) {
-            this.grid[c] = []; // Creamos una columna vacía
+            this.grid[c] = []; 
             for (let r = 0; r < this.rows; r++) {
-                // Estado inicial: 50% de probabilidad de estar encendida
-                // Math.random() devuelve un número entre 0 y 1
                 this.grid[c][r] = Math.random() > 0.5;
             }
         }
-        console.log("Matriz generada:", this.grid);
     }
 
     bindEvents() {
@@ -51,30 +48,56 @@ class LightsOutGame {
     }
 
     handleClick(col, row) {
-        // --- ITERACIÓN 3: REGLAS DEL JUEGO ---
-        
-        // 1. Aplicar la lógica (cambiar luces)
         this.toggleLights(col, row);
-        
-        // 2. Repintar TODO el tablero con el nuevo estado
-        this.draw();
+        // El loop se encarga de pintar automáticamente 60 veces por segundo.
     }
 
     toggleLights(col, row) {
-        // Función auxiliar interna para cambiar una celda de forma segura
         const toggle = (c, r) => {
             if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
-                // Invertimos el valor: true -> false, false -> true
                 this.grid[c][r] = !this.grid[c][r];
             }
         };
+        toggle(col, row);
+        toggle(col, row - 1);
+        toggle(col, row + 1);
+        toggle(col - 1, row);
+        toggle(col + 1, row);
+    }
 
-        // Regla clásica: La celda clicada + Arriba, Abajo, Izquierda, Derecha
-        toggle(col, row);     // Centro
-        toggle(col, row - 1); // Arriba
-        toggle(col, row + 1); // Abajo
-        toggle(col - 1, row); // Izquierda
-        toggle(col + 1, row); // Derecha
+    // --- ITERACIÓN 4: EL MOTOR (GAME LOOP) ---
+    
+    start() {
+        if (!this.isRunning) {
+            this.isRunning = true;
+            // Pedimos el primer frame
+            requestAnimationFrame((timestamp) => this.loop(timestamp));
+        }
+    }
+
+    loop(timestamp) {
+        if (!this.isRunning) return;
+
+        // 1. Cálculo del DeltaTime (dt)
+        // Convertimos milisegundos a segundos (ej: 0.016s para 60fps)
+        const deltaTime = (timestamp - this.lastTime) / 1000;
+        this.lastTime = timestamp;
+
+        // Limitamos dt para evitar saltos grandes si el usuario cambia de pestaña
+        const safeDeltaTime = Math.min(deltaTime, 0.1);
+
+        // 2. Actualizar lógica (físicas, animaciones)
+        this.update(safeDeltaTime);
+
+        // 3. Dibujar todo
+        this.draw();
+
+        // 4. Solicitar el siguiente frame
+        requestAnimationFrame((ts) => this.loop(ts));
+    }
+
+    update(dt) {
+        // Por ahora no hay lógica que actualizar en cada frame
     }
 
     draw() {
@@ -84,16 +107,12 @@ class LightsOutGame {
             for (let c = 0; c < this.cols; c++) {
                 const x = c * this.cellSize;
                 const y = r * this.cellSize;
-                
-                // Leemos el estado de NUESTRA matriz
                 const isOn = this.grid[c][r];
 
-                // --- ESTILO VISUAL ---
                 this.ctx.strokeStyle = '#333';
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeRect(x, y, this.cellSize, this.cellSize);
                 
-                // Dibujar "bombilla"
                 const centerX = x + (this.cellSize / 2);
                 const centerY = y + (this.cellSize / 2);
                 
@@ -101,20 +120,16 @@ class LightsOutGame {
                 this.ctx.arc(centerX, centerY, this.cellSize * 0.35, 0, Math.PI * 2);
                 
                 if (isOn) {
-                    // LUZ ENCENDIDA: Amarillo brillante + Resplandor
                     this.ctx.fillStyle = '#ffeb3b'; 
-                    this.ctx.shadowBlur = 20; // Efecto de luz (glow)
+                    this.ctx.shadowBlur = 20;
                     this.ctx.shadowColor = "#ffeb3b";
                 } else {
-                    // LUZ APAGADA: Gris oscuro + Sin resplandor
                     this.ctx.fillStyle = '#444'; 
                     this.ctx.shadowBlur = 0;
                 }
                 
                 this.ctx.fill();
                 this.ctx.closePath();
-                
-                // IMPORTANTE: Resetear el shadowBlur para que no afecte al recuadro siguiente
                 this.ctx.shadowBlur = 0;
             }
         }
