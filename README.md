@@ -152,4 +152,4 @@ npx cypress open  # Abre la suite de tests E2E
 - [Práctica 2 — Ejercicio 2 (Parcel)](./practica-2/ejercicio-2/)
 - [Práctica 3 - Ejercicio 1 (Hola mundo)](./practica-3/ejercicio-1/)
 - [Práctica 3 - Ejercicio 2 (WebComponents + complejo)](./practica-3/ejercicio-2/)
-- [Práctica 4 - Gatsby (JAMStack)](./practica-4/practica-gatsby/)
+- [Práctica 4 - Gatsby (JAMStack)](./practica4/practica-gatsby/)
