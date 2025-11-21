@@ -11,8 +11,12 @@ Repositorio de prácticas de **Sistemas y Tecnologías Web** (cliente). A contin
 SYTW-CLIENTE/
 ├─ practica-1/                 # Maquetación con Sass + Flex + Grid
 ├─ practica-2/
-│  ├─ ejercicio-1/            # Gulp (Sass, autoprefixer, minify, imágenes, watch)
-│  └─ ejercicio-2/            # Parcel (bundler) + GitHub Pages
+│  ├─ ejercicio-1/             # Gulp (Sass, autoprefixer, minify, imágenes, watch)
+│  └─ ejercicio-2/             # Parcel (bundler) + GitHub Pages
+├─ practica-3/                 # Web Components Nativos
+│  ├─ ejercicio-1/             # Custom Element básico (Shadow DOM)
+│  └─ ejercicio-2/             # App compleja (API, filtrado y localStorage)
+├─ practica-4/                 # Gatsby (JAMStack) + GraphQL + Cypress E2E
 └─ .gitignore
 ```
 
@@ -119,9 +123,33 @@ npm run deploy            # publica en branch gh-pages
 - **Cómo probar**: abrir `practica-3/ejercicio-2/index.html` con Live Server.
 
 ---
+
+## 📁 `practica-4/` — Gatsby (JAMStack + GraphQL)
+**Qué hay:** Sitio web estático desarrollado con **Gatsby** (React) siguiendo la arquitectura **JAMStack**. Consume la misma API de espacios culturales que la práctica anterior, pero genera las páginas estáticamente en tiempo de construcción (*build time*).
+
+**Características principales:**
+- **Generación de páginas dinámica**: Uso de `gatsby-node.js` y la API `createPages` para generar automáticamente una ruta (`/espacio/:id`) por cada ítem del JSON externo.
+- **Micro-frontends**: Arquitectura basada en componentes reutilizables (`<Header>`, `<Layout>`, `<CartaEspacio>`).
+- **Interactividad y Persistencia**: Los componentes de **Valoración** y **Noticias** son interactivos y utilizan `localStorage` para persistir los datos del usuario en el navegador (sin backend).
+- **GraphQL**: Gestión de la capa de datos para alimentar tanto la página de inicio (listado) como las plantillas de detalle.
+- **Calidad**:
+  - **Accesibilidad**: Verificación mediante `eslint-plugin-jsx-a11y`.
+  - **Testing E2E**: Pruebas de flujo completo (navegación e interacción) con **Cypress**.
+
+**Comandos rápidos:**
+```bash
+cd practica-4
+npm install
+npm run develop   # Inicia servidor en http://localhost:8000 + GraphiQL
+npx cypress open  # Abre la suite de tests E2E
+```
+
+
+---
 ## Enlaces internos útiles
 - [Práctica 1](./practica-1/)
 - [Práctica 2 — Ejercicio 1 (Gulp)](./practica-2/ejercicio-1/)
 - [Práctica 2 — Ejercicio 2 (Parcel)](./practica-2/ejercicio-2/)
 - [Práctica 3 - Ejercicio 1 (Hola mundo)](./practica-3/ejercicio-1/)
 - [Práctica 3 - Ejercicio 2 (WebComponents + complejo)](./practica-3/ejercicio-2/)
+- [Práctica 4 - Gatsby (JAMStack)](./practica-4/)
