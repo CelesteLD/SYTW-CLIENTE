@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Práctica Lights Out - Máster Web</title>
-    
-    <!-- Vinculamos la hoja de estilos -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -32,16 +30,26 @@
                 </select>
             </div>
 
-            <button id="btnReset">Reiniciar Partida</button>
-        
-        <!-- El Canvas donde dibujaremos el juego -->
-            <canvas id="gameCanvas" width="500" height="500"></canvas>
-        
-            <p class="status">Iteración 6: Añadiendo modos de juego y tamaños</p>
+            <button id="btnReset">Reiniciar</button>
         </div>
+
+        <!-- Contenedor relativo para posicionar el mensaje encima -->
+        <div style="position: relative;">
+            <canvas id="gameCanvas" width="500" height="500"></canvas>
+            
+            <!-- NUEVO: Mensaje de Victoria -->
+            <div id="victoryModal" class="victory-overlay hidden">
+                <div class="victory-content">
+                    <h2>¡LUZ APAGADA! 🎉</h2>
+                    <p>Has completado el nivel.</p>
+                    <button id="btnPlayAgain">Jugar Otra Vez</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="status">Estado: Finalizado (Lógica, Animación y Victoria)</p>
     </div>
 
-    <!-- Vinculamos la lógica del juego (script) -->
     <script src="js/game.js"></script>
 </body>
 </html>
