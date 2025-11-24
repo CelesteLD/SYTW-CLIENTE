@@ -38,7 +38,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const path = require("path") 
 
   // 1. Consultar los espacios. 
-  // OJO: Pedimos el 'id' (interno) Y TAMBIÉN 'espacio_cultural_id' (el número del JSON)
+  // Pedimos el 'id' (interno) y también 'espacio_cultural_id' (el número del JSON)
   const result = await graphql(`
     query {
       allEspacioCultural {
@@ -58,12 +58,12 @@ exports.createPages = async ({ graphql, actions }) => {
 
   result.data.allEspacioCultural.nodes.forEach(node => {
     createPage({
-      // AQUÍ ESTÁ EL CAMBIO: Usamos el ID del JSON para la URL (ej: /espacio/6)
+      // Usamos el ID del JSON para la URL (ej: /espacio/6)
       path: `/espacio/${node.espacio_cultural_id}`, 
       
       component: plantilla,
       
-      // PERO aquí pasamos el ID interno para que la plantilla encuentre los datos rápido
+      // aquí pasamos el ID interno para que la plantilla encuentre los datos rápido
       context: {
         id: node.id, 
       },
