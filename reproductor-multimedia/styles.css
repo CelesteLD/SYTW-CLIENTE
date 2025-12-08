@@ -1,5 +1,6 @@
 :root {
   --accent: #ff3e3e; 
+  --ui-font: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   --bg-overlay: rgba(3,7,18,0.55); 
 }
 
@@ -9,18 +10,41 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  background-image: url('assets/bg.jpg'), linear-gradient(180deg,#061022 0%, #071428 100%);
-  background-blend-mode: overlay;
+  background-image: url('assets/bg.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
   color:#e6eef8;
   padding:24px;
   position: relative;
+
+  font-family: var(--ui-font);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-.container {width:100%;max-width:720px}
+.container {
+    width:100%;
+    max-width:720px
+}
 
-h1 {font-size:1.4rem;margin-bottom:16px;text-align:center;color:var(--accent)}
+h1 {
+    font-weight: 700;
+    margin-bottom:16px;
+    text-align:center;
+    color:var(--accent)
+}
+
+.track-title { 
+    font-family: var(--ui-font); 
+    font-weight: 600; 
+    letter-spacing: -0.2px; 
+}
+
+.track-artist { 
+    font-weight: 300; 
+}
 
 .player-card {
   background:rgba(255,255,255,0.03);
@@ -63,7 +87,61 @@ h1 {font-size:1.4rem;margin-bottom:16px;text-align:center;color:var(--accent)}
   width:0%;
   background:linear-gradient(90deg,var(--accent), #f97161);
   border-radius:999px;
-  transition:width .08s linear;
+  transition: width 0.12s ease-out;
+}
+
+.progress-buffer {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 0%;
+  background: rgba(255,255,255,0.12); 
+  border-radius: 999px;
+  z-index: 1;
+  transition: width .2s linear;
+}
+
+.progress-bar { z-index: 2; position: relative; }
+
+/* Tooltip preview */
+.progress-tooltip {
+  position: absolute;
+  top: -34px; 
+  left: 0;
+  transform: translateX(-50%);
+  background: rgba(8,10,15,0.92);
+  color: #e6eef8;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .12s ease, transform .06s ease;
+  z-index: 10;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* pequeña flecha bajo el tooltip */
+.progress-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(8,10,15,0.92);
+}
+
+.progress-tooltip.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-3px);
+}
+
+@media (max-width: 420px) {
+  .progress-tooltip { font-size: 0.75rem; padding:4px 6px; top: -30px; }
 }
 
 .time-row {
@@ -81,6 +159,7 @@ h1 {font-size:1.4rem;margin-bottom:16px;text-align:center;color:var(--accent)}
   align-items:center;
   flex-wrap:wrap;
 }
+
 .extra-controls label {
     font-size:0.95rem;
     color:var(--muted);
@@ -88,6 +167,7 @@ h1 {font-size:1.4rem;margin-bottom:16px;text-align:center;color:var(--accent)}
     gap:8px;
     align-items:center
 }
+
 select {
     background:transparent;
     color:inherit;
@@ -96,57 +176,98 @@ select {
     border-radius:6px
 }
 
-/* estilos comunes para sliders */
-input[type="range"] {
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.cover-wrap {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+}
+
+.cover-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.track-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.track-artist {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+#volume {
   -webkit-appearance: none;
   appearance: none;
-  width: 160px;
-  height: 14px;      /* altura total de la pista */
+  width: 220px;        
+  height: 12px;        
   background: transparent;
   margin: 0 6px;
   vertical-align: middle;
   cursor: pointer;
 }
 
-/* webkit: track */
-input[type="range"]::-webkit-slider-runnable-track {
+#volume::-webkit-slider-runnable-track {
   height: 8px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.12); /* color base de la pista no llenada */
+  background: rgba(255,255,255,0.12); /* pista base (vacía) */
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
 }
 
-/* webkit: thumb */
-input[type="range"]::-webkit-slider-thumb {
+#volume::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  margin-top: -7px; /* centrar en pista (thumb height - track height) / 2 */
+  margin-top: -7px; /* centrar sobre pista de 8px */
   background: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-  border: 4px solid var(--accent); /* borde morado para que destaque */
+  border: 4px solid var(--accent); /* borde con el color principal */
 }
 
-/* firefox */
-input[type="range"]::-moz-range-track {
+#volume::-moz-range-track {
   height: 8px;
   border-radius: 999px;
   background: rgba(255,255,255,0.12);
 }
-input[type="range"]::-moz-range-thumb {
-  width:22px; height:22px; border-radius:50%;
-  background:#fff; border:4px solid var(--accent);
+
+#volume::-moz-range-thumb {
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#fff;
+  border:4px solid var(--accent);
 }
 
-/* Edge/IE fallback (si hace falta) */
-input[type="range"]::-ms-track { 
+#volume::-ms-track { 
     background:transparent; 
     border-color:transparent; 
     color:transparent; 
+    height:8px; 
 }
-input[type="range"]::-ms-thumb { 
+
+#volume::-ms-thumb { 
     width:22px; 
     height:22px; 
     border-radius:50%; 
@@ -154,6 +275,12 @@ input[type="range"]::-ms-thumb {
     border:4px solid var(--accent); 
 }
 
-input[type="range"]  { 
-    transition: background .15s linear; 
-} /* Transicion suave*/
+/* transition suave y prioridad para la apariencia de relleno */
+#volume { 
+    transition: background .12s linear; 
+}
+
+/* si quieres que el slider ocupe menos en móviles */
+@media (max-width:520px) {
+  #volume { width:140px; }
+}

@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Reproductor multimedia mejorado</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Reproductor multimedia mejorado</title>
+    <link rel="icon" href="/assets/icono_circulo.svg" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/icono_circulo.svg">
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <main class="container">
     <h1>Reproductor multimedia mejorado</h1>
 
     <section class="player-card" aria-label="Reproductor de audio">
-      <audio id="audio" preload="metadata">
+
+        <div class="meta-row">
+            <div class="cover-wrap">
+                <img id="coverImage" src="assets/cover.jpg" alt="Carátula" />
+            </div>
+
+            <div class="meta-text">
+                <div id="trackTitle" class="track-title">Instagram Reels Marketing Music</div>
+                <div id="trackArtist" class="track-artist">Tatamusic — Pixabay</div>
+            </div>
+        </div>
+
+      <!-- audio con metadatos en data-* -->
+      <audio id="audio" preload="metadata"
+             data-title="Instagram Reels Marketing Music"
+             data-artist="Tatamusic"
+             data-album="Pixabay"
+             data-artwork="assets/cover.jpg">
         <source src="assets/demo-song.mp3" type="audio/mpeg">
         Tu navegador no soporta el elemento audio.
       </audio>
@@ -25,7 +48,9 @@
       </div>
 
       <div class="progress-container" id="progressContainer" aria-label="Barra de progreso">
+        <div class="progress-buffer" id="progressBuffer"></div>
         <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-tooltip" id="progressTooltip" role="status" aria-hidden="true">--:--</div>
       </div>
 
       <div class="time-row">
