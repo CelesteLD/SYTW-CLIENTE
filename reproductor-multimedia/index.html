@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reproductor multimedia mejorado</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Reproductor multimedia mejorado</h1>
+
+    <section class="player-card" aria-label="Reproductor de audio">
+      <audio id="audio" preload="metadata">
+        <source src="assets/demo-song.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento audio.
+      </audio>
+
+      <div class="controls-row">
+        <button id="playPause" aria-label="Reproducir">▶ Play</button>
+        <button id="stop" aria-label="Detener">⏹ Stop</button>
+        <button id="back10" title="Retroceder 10s">« 10s</button>
+        <button id="forward10" title="Adelantar 10s">10s »</button>
+        <button id="mute" title="Silenciar">🔊</button>
+      </div>
+
+      <div class="progress-container" id="progressContainer" aria-label="Barra de progreso">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="time-row">
+        <span id="currentTime">0:00</span>
+        <span id="duration">/ 0:00</span>
+      </div>
+
+      <div class="extra-controls">
+        <label>
+          Volumen
+          <input id="volume" type="range" min="0" max="100" value="100">
+        </label>
+
+        <label>
+          Velocidad
+          <select id="playbackRate">
+            <option value="0.5">0.5x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
