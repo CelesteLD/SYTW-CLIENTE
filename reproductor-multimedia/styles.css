@@ -54,6 +54,16 @@ h1 {
   box-shadow: 0 6px 18px rgba(2,6,23,0.6);
 }
 
+/* --- NUEVO: Estilos del Canvas --- */
+#visualizer {
+    width: 100%;
+    height: 60px; /* Altura visual */
+    margin-bottom: 12px;
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+/* -------------------------------- */
+
 .controls-row {
   display:flex;
   gap:8px;

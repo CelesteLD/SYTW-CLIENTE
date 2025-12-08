@@ -66,7 +66,10 @@ function loadState(){
           audio.currentTime = state.time;
         }
         if (state.wasPlaying) {
-          audio.play().catch(()=>{/* autoplay might be blocked; ignore */});
+            // Nota: Intentamos iniciar el visualizador si se restaura la reproducción automática
+            initAudioVisualizer().then(() => {
+                audio.play().catch(()=>{/* autoplay might be blocked; ignore */});
+            });
         }
       }, { once: true });
     }
@@ -88,6 +91,9 @@ function updateVisibleMetadataFromDataAttrs() {
 
 // --- controles básicos ---
 playPauseBtn.addEventListener('click', () => {
+    // INICIALIZAMOS EL CONTEXTO DE AUDIO AL HACER CLICK (Requisito del navegador)
+    initAudioVisualizer();
+
   if (audio.paused) {
     audio.play();
     playPauseBtn.textContent = '⏸ Pause';
@@ -372,8 +378,8 @@ function setupMediaSessionMetadata() {
     // no romper si falla
   }
 
-  // Action handlers (envueltos para evitar excepciones en navegadores restrictivos)
-  try { navigator.mediaSession.setActionHandler('play', () => { audio.play(); playPauseBtn.textContent = '⏸ Pause'; }); } catch (e) {}
+  // Action handlers
+  try { navigator.mediaSession.setActionHandler('play', () => { initAudioVisualizer(); audio.play(); playPauseBtn.textContent = '⏸ Pause'; }); } catch (e) {}
   try { navigator.mediaSession.setActionHandler('pause', () => { audio.pause(); playPauseBtn.textContent = '▶ Play'; }); } catch (e) {}
   try {
     navigator.mediaSession.setActionHandler('seekbackward', (details) => {
@@ -396,7 +402,6 @@ function setupMediaSessionMetadata() {
   } catch (e) {}
   try { navigator.mediaSession.setActionHandler('stop', () => { audio.pause(); audio.currentTime = 0; playPauseBtn.textContent = '▶ Play'; }); } catch (e) {}
 
-  // set initial position state if supported
   try {
     if ('setPositionState' in navigator.mediaSession && audio.duration && Number.isFinite(audio.duration)) {
       navigator.mediaSession.setPositionState({
@@ -407,5 +412,3 @@ function setupMediaSessionMetadata() {
     }
   } catch (err) {}
 }
-
-/* FIN Media Session */
