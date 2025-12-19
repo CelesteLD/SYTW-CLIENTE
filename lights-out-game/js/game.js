@@ -133,6 +133,7 @@ class LightsOutGame {
 
     // Lógica pura: invierte el estado .active de las celdas
     toggleLogicOnly(col, row) {
+        
         const toggle = (c, r) => {
             if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
                 this.grid[c][r].active = !this.grid[c][r].active;

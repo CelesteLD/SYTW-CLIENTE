@@ -2,7 +2,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF, Html, Environment } from '@react-three/drei' 
 import { Suspense, useState, useRef } from 'react'
 
-function Coche({ url, position, scale = 1, rotation = [0, 0, 0], titulo, descripcion, precio }) {
+function Coche({ url, position, scale = 1, rotation = [0, 0, 0], titulo, descripcion, precio, setGirando}) {
   const gltf = useGLTF(url)
   const [visible, setVisible] = useState(false)
   const miCocheRef = useRef()
@@ -12,6 +12,7 @@ function Coche({ url, position, scale = 1, rotation = [0, 0, 0], titulo, descrip
   useFrame((state) => {
     if (miCocheRef.current) {
       const t = state.clock.getElapsedTime()
+      
       
       // 1. Vibración del motor (Rápida y corta):
       // Math.sin(t * 20) crea una oscilación rápida (20 veces por segundo aprox)
